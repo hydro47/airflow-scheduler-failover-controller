@@ -211,7 +211,7 @@ class FailoverController:
             self.metadata_service.set_failover_heartbeat()
             self.IS_FAILOVER_CONTROLLER_ACTIVE = True
             self.logger.warning("This Failover Controller is now ACTIVE.")
-        except Exception, e:
+        except Exception as e:
             self.IS_FAILOVER_CONTROLLER_ACTIVE = False
             self.logger.error("Failed to set Failover Controller as ACTIVE. Trying again next heart beat.")
             traceback.print_exc(file=sys.stdout)

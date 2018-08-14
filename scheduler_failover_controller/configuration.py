@@ -1,5 +1,5 @@
 import os
-import ConfigParser
+import configparser
 import socket
 import sys
 import logging
@@ -38,7 +38,7 @@ poll_frequency = """ + str(DEFAULT_POLL_FREQUENCY) + """
 airflow_scheduler_start_command = nohup airflow scheduler >> ~/airflow/logs/scheduler.logs &
 
 # Command to use when trying to stop a Scheduler instance on a node
-airflow_scheduler_stop_command = for pid in `ps -ef | grep "airflow scheduler" | awk '{print $2}'` \; do kill -9 $pid \; done
+airflow_scheduler_stop_command = for pid in `ps -ef | grep "airflow scheduler" | awk '{print( $2}'` \; do kill -9 $pid \; done)
 
 # Logging Level. Choices include:
 # NOTSET, DEBUG, INFO, WARN, ERROR, CRITICAL
@@ -80,10 +80,10 @@ class Configuration:
         self.airflow_config_file_path = airflow_config_file_path
 
         if not os.path.isfile(airflow_config_file_path):
-            print "Cannot find Airflow Configuration file at '" + str(airflow_config_file_path) + "'!!!"
+            print( "Cannot find Airflow Configuration file at '" + str(airflow_config_file_path) + "'!!!")
             sys.exit(1)
 
-        self.conf = ConfigParser.RawConfigParser()
+        self.conf = configparser.RawConfigParser()
         self.conf.read(airflow_config_file_path)
 
     @staticmethod
@@ -181,9 +181,9 @@ class Configuration:
     def add_default_scheduler_failover_configs_to_airflow_configs(self):
         with open(self.airflow_config_file_path, 'r') as airflow_config_file:
             if "[scheduler_failover]" not in airflow_config_file.read():
-                print "Adding Scheduler Failover configs to Airflow config file..."
+                print( "Adding Scheduler Failover configs to Airflow config file...")
                 with open(self.airflow_config_file_path, "a") as airflow_config_file_to_append:
                     airflow_config_file_to_append.write(DEFAULT_SCHEDULER_FAILOVER_CONTROLLER_CONFIGS)
-                    print "Finished adding Scheduler Failover configs to Airflow config file."
+                    print( "Finished adding Scheduler Failover configs to Airflow config file.")
             else:
-                print "[scheduler_failover] section already exists. Skipping adding Scheduler Failover configs."
+                print( "[scheduler_failover] section already exists. Skipping adding Scheduler Failover configs.")
