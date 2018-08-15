@@ -66,7 +66,7 @@ def clear_metadata(args):
 def metadata(args):
     scheduler_nodes_in_cluster, poll_frequency, metadata_service, emailer, failover_controller = get_all_scheduler_failover_controller_objects()
     print( "Getting Metadata for current_host: '" + configuration.get_current_host() + "'")
-    metadata_service.print(_metadata())
+    metadata_service.print_metadata()
 
 
 def send_test_email(args):

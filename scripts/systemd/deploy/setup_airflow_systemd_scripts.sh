@@ -1,6 +1,6 @@
 #!/bin/bash
 
-AIRFLOW_VERSION="1.7.0"
+AIRFLOW_VERSION="1.8.0"
 REPO_ARCHIVE_URL="https://github.com/apache/incubator-airflow/archive/"
 USERNAME="airflow"
 GROUP="airflow"
