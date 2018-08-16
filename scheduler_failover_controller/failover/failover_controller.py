@@ -41,6 +41,7 @@ class FailoverController:
         # if the current controller instance is not active, then execute this statement
         if not self.IS_FAILOVER_CONTROLLER_ACTIVE:
             self.logger.info("This Failover Controller is on Standby.")
+            self.logger.info("This is " + self.current_host)
 
             if active_failover_node is not None:
                 self.logger.info("There already is an active Failover Controller '" + str(active_failover_node)+ "'")
@@ -143,25 +144,27 @@ class FailoverController:
         self.logger.info("Starting to Check if Scheduler on host '" + str(host) + "' is running...")
 
         process_check_command = "ps -eaf"
-        grep_command = "grep 'airflow scheduler'"
+        grep_command = "grep '/[u]sr/bin/airflow scheduler'"
         grep_command_no_quotes = grep_command.replace("'", "")
         full_status_check_command = process_check_command + " | " + grep_command  # ps -eaf | grep 'airflow scheduler'
         is_running = False
         is_successful, output = self.command_runner.run_command(host, full_status_check_command)
         self.LATEST_FAILED_STATUS_MESSAGE = output
+        print(output)
         if is_successful:
             active_list = []
             for line in output:
-                if line.strip() != "" and process_check_command not in line and grep_command not in line and grep_command_no_quotes not in line and full_status_check_command not in line:
+                if (line.strip() != "") and not (process_check_command in str(line)) and not (grep_command in str(line)) and not (grep_command_no_quotes in str(line)) and not (full_status_check_command in str(line)):
                     active_list.append(line)
 
             active_list_length = len(list(filter(None, active_list)))
-
+	    #self.logger.info("Active list: " + active_list)
+	    #self.logger.info("Active list length: " + active_list_length)
             # todo: If there's more then one scheduler running this should kill off the other schedulers. MIGHT ALREADY BE HANDLED. DOUBLE CHECK.
 
             is_running = active_list_length > 0
         else:
-            self.logger.critical("is_scheduler_running check failed")
+            self.logger.critical("is_scheduler_running check failed", output)
 
         self.logger.info("Finished Checking if Scheduler on host '" + str(host) + "' is running. is_running: " + str(is_running))
 
