@@ -31,7 +31,7 @@ In case you want to do development work on the project
 
 1. Clone the project from GitHub to your local machine
 
-        git clone https://github.com/teamclairvoyant/airflow-scheduler-failover-controller
+        git clone https://github.com/hydro47/airflow-scheduler-failover-controller
 
 2. Run pip install
 
