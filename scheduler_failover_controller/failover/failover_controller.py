@@ -148,9 +148,12 @@ class FailoverController:
         grep_command_no_quotes = grep_command.replace("'", "")
         full_status_check_command = process_check_command + " | " + grep_command  # ps -eaf | grep 'airflow scheduler'
         is_running = False
-        is_successful, output = self.command_runner.run_command(host, full_status_check_command)
+        is_successful, output, exitcode = self.command_runner.run_command(host, full_status_check_command)
         self.LATEST_FAILED_STATUS_MESSAGE = output
         print(output)
+        print(exitcode)
+        if (exitcode == 1 ):
+            is_succesful = True	
         if is_successful:
             active_list = []
             for line in output:
