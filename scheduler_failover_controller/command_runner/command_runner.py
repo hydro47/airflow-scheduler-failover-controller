@@ -58,4 +58,4 @@ class CommandRunner:
         if process.returncode != 0:
             is_successful = False
         self.logger.debug("Run Command output: " + str(output))
-        return is_successful, output, exitcode
+        return is_successful, output, process.returncode
