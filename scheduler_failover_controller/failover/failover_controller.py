@@ -153,7 +153,7 @@ class FailoverController:
         print(output)
         print(exitcode)
         if (exitcode == 1 ):
-            is_succesful = True	
+            is_successful = True	
         if is_successful:
             active_list = []
             for line in output:
