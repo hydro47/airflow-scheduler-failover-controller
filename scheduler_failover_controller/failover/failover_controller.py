@@ -175,13 +175,13 @@ class FailoverController:
 
     def startup_scheduler(self, host):
         self.logger.info("Starting Scheduler on host '" + str(host) + "'...")
-        is_successful, output = self.command_runner.run_command(host, self.airflow_scheduler_start_command)
+        is_successful, output, exitcode = self.command_runner.run_command(host, self.airflow_scheduler_start_command)
         self.LATEST_FAILED_START_MESSAGE = output
         self.logger.info("Finished starting Scheduler on host '" + str(host) + "'")
 
     def shutdown_scheduler(self, host):
         self.logger.warning("Starting to shutdown Scheduler on host '" + host + "'...")
-        is_successful, output = self.command_runner.run_command(host, self.airflow_scheduler_stop_command)
+        is_successful, output, exitcode  = self.command_runner.run_command(host, self.airflow_scheduler_stop_command)
         self.LATEST_FAILED_SHUTDOWN_MESSAGE = output
         self.logger.warning("Finished shutting down Scheduler on host '" + host + "'")
 
